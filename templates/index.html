@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetic Patients Readmission Prediction</title>
+    <style>
+        /* General Reset */
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Title Styling */
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        input[type="number"], select {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Prediction Result Styling */
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Diabetic Patients Readmission Prediction</h1>
+        <form action="/predict" method="post">
+            <!-- Fields in the specified order -->
+
+            <!-- Numeric fields -->
+            <label for="num_lab_procedures">Number of Lab Procedures:</label>
+            <input type="number" name="num_lab_procedures" required>
+
+            <label for="num_medications">Number of Medications:</label>
+            <input type="number" name="num_medications" required>
+
+            <label for="time_in_hospital">Time in Hospital:</label>
+            <input type="number" name="time_in_hospital" required>
+
+            <!-- Diagnosis dropdowns -->
+            <label for="diag_1">Primary Diagnosis Code:</label>
+            <select name="diag_1" required>
+                <option value="Circulatory">Circulatory</option>
+                <option value="Diabetes">Diabetes</option>
+                <option value="Digestive">Digestive</option>
+                <option value="Genitourinary">Genitourinary</option>
+                <option value="Infectious Diseases">Infectious Diseases</option>
+                <option value="Injury">Injury</option>
+                <option value="Musculoskeletal">Musculoskeletal</option>
+                <option value="Neoplasms">Neoplasms</option>
+                <option value="Other">Other</option>
+                <option value="Respiratory">Respiratory</option>
+            </select>
+
+            <label for="age">Age:</label>
+            <select name="age" required>
+                <option value="[0-10)">0-10</option>
+                <option value="[10-20)">10-20</option>
+                <option value="[20-30)">20-30</option>
+                <option value="[30-40)">30-40</option>
+                <option value="[40-50)">40-50</option>
+                <option value="[50-60)">50-60</option>
+                <option value="[60-70)">60-70</option>
+                <option value="[70-80)">70-80</option>
+                <option value="[80-90)">80-90</option>
+                <option value="[90-100)">90-100</option>
+            </select>
+
+            <label for="diag_2">Secondary Diagnosis Code:</label>
+            <select name="diag_2" required>
+                <option value="Circulatory">Circulatory</option>
+                <option value="Diabetes">Diabetes</option>
+                <option value="Digestive">Digestive</option>
+                <option value="Genitourinary">Genitourinary</option>
+                <option value="Infectious Diseases">Infectious Diseases</option>
+                <option value="Injury">Injury</option>
+                <option value="Musculoskeletal">Musculoskeletal</option>
+                <option value="Neoplasms">Neoplasms</option>
+                <option value="Other">Other</option>
+                <option value="Respiratory">Respiratory</option>
+            </select>
+
+            <label for="diag_3">Tertiary Diagnosis Code:</label>
+            <select name="diag_3" required>
+                <option value="Circulatory">Circulatory</option>
+                <option value="Diabetes">Diabetes</option>
+                <option value="Digestive">Digestive</option>
+                <option value="Genitourinary">Genitourinary</option>
+                <option value="Infectious Diseases">Infectious Diseases</option>
+                <option value="Injury">Injury</option>
+                <option value="Musculoskeletal">Musculoskeletal</option>
+                <option value="Neoplasms">Neoplasms</option>
+                <option value="Other">Other</option>
+                <option value="Respiratory">Respiratory</option>
+            </select>
+
+            <label for="num_procedures">Number of Procedures:</label>
+            <input type="number" name="num_procedures" required>
+
+            <label for="number_diagnoses">Number of Diagnoses:</label>
+            <input type="number" name="number_diagnoses" required>
+
+            <!-- Medication usage dropdowns -->
+            <label for="insulin">Insulin Usage:</label>
+            <select name="insulin" required>
+                <option value="Down">Down</option>
+                <option value="No">No</option>
+                <option value="Steady">Steady</option>
+                <option value="Up">Up</option>
+            </select>
+
+            <label for="admission_source">Admission Source:</label>
+            <select name="admission_source" required>
+                <option value="Emergency Room">Emergency Room</option>
+                <option value="Other">Other</option>
+                <option value="Referral">Referral</option>
+                <option value="Transfer">Transfer</option>
+                <option value="nan">Unknown</option>
+            </select>
+
+            <label for="number_inpatient">Number of Inpatient Visits:</label>
+            <input type="number" name="number_inpatient" required>
+
+            <label for="service_utilization">Service Utilization:</label>
+            <input type="number" name="service_utilization" required>
+
+            <label for="race">Race:</label>
+            <select name="race" required>
+                <option value="AfricanAmerican">African American</option>
+                <option value="Asian">Asian</option>
+                <option value="Caucasian">Caucasian</option>
+                <option value="Hispanic">Hispanic</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="gender">Gender:</label>
+            <select name="gender" required>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </select>
+
+            <label for="metformin">Metformin Usage:</label>
+            <select name="metformin" required>
+                <option value="Down">Down</option>
+                <option value="No">No</option>
+                <option value="Steady">Steady</option>
+                <option value="Up">Up</option>
+            </select>
+
+            <label for="admission_type">Admission Type:</label>
+            <select name="admission_type" required>
+                <option value="Elective">Elective</option>
+                <option value="Emergency">Emergency</option>
+                <option value="Newborn">Newborn</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="glipizide">Glipizide Usage:</label>
+            <select name="glipizide" required>
+                <option value="Down">Down</option>
+                <option value="No">No</option>
+                <option value="Steady">Steady</option>
+                <option value="Up">Up</option>
+            </select>
+
+            <label for="number_outpatient">Number of Outpatient Visits:</label>
+            <input type="number" name="number_outpatient" required>
+
+            <label for="glyburide">Glyburide Usage:</label>
+            <select name="glyburide" required>
+                <option value="Down">Down</option>
+                <option value="No">No</option>
+                <option value="Steady">Steady</option>
+                <option value="Up">Up</option>
+            </select>
+
+            <!-- Submit button -->
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction_text %}
+            <div class="result">
+                <h2>Prediction Result</h2>
+                <p>{{ prediction_text }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
